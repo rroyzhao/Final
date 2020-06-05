@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this, Ocr_Activity.class);
+                intent.setClass(MainActivity.this, Activity_baidu.class);
                 startActivity(intent);
             }
         });
