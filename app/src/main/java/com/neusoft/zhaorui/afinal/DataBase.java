@@ -7,7 +7,7 @@ import android.database.SQLException;
 
 public class DataBase extends SQLiteOpenHelper {
     // 创建类
-    private static final String DB_NAME = "Fina2.db";
+    private static final String DB_NAME = "Fina11.db";
     private static final String TABLE_NAME = "Info";
     private static final int DB_VERSION = 1;
 
@@ -24,7 +24,12 @@ public class DataBase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_TABLE = "CREATE TABLE if not exists "
                 + TABLE_NAME
-                + "(name TEXT)";
+                + "(name TEXT,"
+                + "sex TEXT,"
+                + "nation TEXT,"
+                + "birthday TEXT,"
+                + "address TEXT,"
+                + "number TEXT)";
         try {
             sqLiteDatabase.execSQL(CREATE_TABLE);
         } catch (SQLException e) {
@@ -36,5 +41,4 @@ public class DataBase extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
-
 }

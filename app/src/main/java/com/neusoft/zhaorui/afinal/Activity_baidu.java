@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -28,21 +29,29 @@ public class Activity_baidu extends AppCompatActivity {
     private ImageView imageView;
     private BaiduOcr baiduOcr;
     Button button_save;
-    //TextView name;
+    private EditText name;
+    private EditText sex;
+    private EditText nation;
+    private EditText birthday;
+    private EditText address;
+    private EditText number;
 
     private void find() {
         button_save = findViewById(R.id.button_save);
-        //name = findViewById(R.id.info_text_view);
-        infoTextView = findViewById(R.id.info_text_view);
+        name = findViewById(R.id.tv_name);
+        sex = findViewById(R.id.tv_sex);
+        nation = findViewById(R.id.tv_nation);
+        birthday = findViewById(R.id.tv_birth);
+        address = findViewById(R.id.tv_address);
+        number = findViewById(R.id.tv_num);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        find();
+        //find();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baidu);
-
-        //infoTextView = findViewById(R.id.info_text_view);
+        find();
         imageView = findViewById(R.id.imageView);
 
         baiduOcr = new BaiduOcr(this);
@@ -58,15 +67,24 @@ public class Activity_baidu extends AppCompatActivity {
         baiduOcr.setOnGotRecgResultListener(new BaiduOcr.OnGotRecgResultListener() {
             @Override
             public void idCardResult(IDCardResult result) {
-                infoTextView.setText("");
+                ////
+                name.setText("");
+                sex.setText("");
+                nation.setText("");
+                birthday.setText("");
+                address.setText("");
+                number.setText("");
+                ////
                 if (result != null) {
                     //显示识别结果
-                    infoTextView.append("姓名：" + result.getName().toString());
-                    infoTextView.append("\n性别：" + result.getGender().toString());
-                    infoTextView.append("\n民族：" + result.getEthnic().toString());
-                    infoTextView.append("\n出生：" + result.getBirthday().toString());
-                    infoTextView.append("\n住址：" + result.getAddress().toString());
-                    infoTextView.append("\n身份证号码：" + result.getIdNumber().toString());
+                    //////
+                    name.append(result.getName().toString());
+                    sex.append(result.getGender().toString());
+                    nation.append(result.getEthnic().toString());
+                    birthday.append(result.getBirthday().toString());
+                    address.append(result.getAddress().toString());
+                    number.append(result.getIdNumber().toString());
+                    //////
                 }
             }
         });
@@ -107,26 +125,36 @@ public class Activity_baidu extends AppCompatActivity {
         });
 
         // 保存按钮
-//        button_save.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                find();
-//                String namet = infoTextView.getText().toString();
-//
-//                DataBase db = new DataBase(getBaseContext());
-//                SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-////                Cursor cursor = sqLiteDatabase.rawQuery(" select * from " +
-////                        TABLE_NAME + " where name like ? ", new String[]{namet});
-//
-//                ContentValues contentValues = new ContentValues();
-//                contentValues.put("name", namet);
-//
-//                sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
-//                sqLiteDatabase.close();
-//                setResult(99, new Intent());
-//                finish();
-//            }
-//        });
+        button_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                find();
+                String namet = name.getText().toString();
+                String sext = sex.getText().toString();
+                String nationt = nation.getText().toString();
+                String birthdayt = birthday.getText().toString();
+                String addresst = address.getText().toString();
+                String numbert = number.getText().toString();
+
+                DataBase db = new DataBase(getBaseContext());
+                SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                Cursor cursor = sqLiteDatabase.rawQuery(" select * from " +
+                        TABLE_NAME + " where name like ? ", new String[]{namet});
+
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("name", namet);
+                contentValues.put("sex", sext);
+                contentValues.put("nation", nationt);
+                contentValues.put("birthday", birthdayt);
+                contentValues.put("address", addresst);
+                contentValues.put("number", numbert);
+
+                sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
+                sqLiteDatabase.close();
+                setResult(99, new Intent());
+                finish();
+            }
+        });
     }
 
     @Override
